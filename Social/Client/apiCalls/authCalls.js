@@ -51,3 +51,14 @@ export const getCurrentUser = async () => {
     throw error.response?.data?.message || "Something went wrong";
   }
 };
+
+export const getProfile = async (userName) => {
+  try {
+    const response = await api.get(`/api/user/getprofile/${userName}`, {withCredentials:true});
+    console.log(response);
+    return response.data; // return just the data
+  } catch (error) {
+    // standardize error handling
+    throw error.response?.data?.message || "Something went wrong";
+  }
+};

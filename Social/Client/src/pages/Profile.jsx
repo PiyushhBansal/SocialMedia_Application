@@ -2,31 +2,41 @@ import { useParams } from "react-router-dom";
 import logo from "../assets/socialLogo.png";
 import Nav from "../components/Nav";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { getProfile } from "../../apiCalls/authCalls";
 import { useDispatch } from "react-redux";
-
+import EditProfile from "./EditProfile";
 import { setProfileData } from "../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
 
   const { userData , profileData } = useSelector((state) => state.user);
 
+  const navigate = useNavigate();
 
   const { userName } = useParams();
   console.log(userName);
   const dispatch = useDispatch();
 
-  async function handleProfile() {
+  console.log("Profile component rendered, profileData:", profileData);
+  console.log("Username param:", userName);
+
+const handleProfile = useCallback(async () => {
+  try {
     const result = await getProfile(userName);
+    console.log("API returned:", result);
     dispatch(setProfileData(result));
+  } catch (err) {
+    console.error("Error fetching profile:", err);
   }
+}, [userName, dispatch]);
 
   useEffect(() => {
     if (userName) {
       handleProfile();
     }
-  }, [userName, dispatch]);
+  }, [userName, handleProfile]);
 
 
   if (!profileData) {
@@ -84,9 +94,9 @@ function Profile() {
               </div>
 
               {/* Right: Edit Profile button (only for logged-in user’s own profile) */}
-              {userData?.userName === profileData.userName && (
+              {userData?.userName === profileData?.userName && (
                 <button 
-                  onClick={() => navigate(`/editprofile/`)}
+                  onClick={() => navigate(`/Editprofile/`)}
                   className="mt-4 sm:mt-0 px-5 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold shadow-md hover:opacity-90 transition"
                 >
                   Edit Profile
