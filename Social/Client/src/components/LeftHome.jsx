@@ -30,7 +30,7 @@ function LeftHome() {
       <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200">
         <div className="flex items-center gap-3">
           <div className="w-[60px] h-[60px] rounded-full overflow-hidden border border-neutral-300">
-            <img  alt="profile" className="w-full h-full object-cover" />
+            <img  src={userData?.profilePicture}alt="profile" className="w-full h-full object-cover" />
           </div>
           <div>
             <div className="font-semibold text-sm text-neutral-900">{userData.userName}</div>

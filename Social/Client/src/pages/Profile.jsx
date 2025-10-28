@@ -75,6 +75,7 @@ const handleProfile = useCallback(async () => {
               {/* Left: Avatar + Info */}
               <div className="flex items-center gap-6">
                 <img
+                    src={profileData?.profilePicture}
                   alt="Profile"
                   className="w-28 h-28 rounded-full object-cover border-4 border-neutral-200 shadow-md"
                 />
@@ -96,7 +97,7 @@ const handleProfile = useCallback(async () => {
               {/* Right: Edit Profile button (only for logged-in user’s own profile) */}
               {userData?.userName === profileData?.userName && (
                 <button 
-                  onClick={() => navigate(`/Editprofile/`)}
+                  onClick={() => navigate('/Editprofile/')}
                   className="mt-4 sm:mt-0 px-5 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold shadow-md hover:opacity-90 transition"
                 >
                   Edit Profile

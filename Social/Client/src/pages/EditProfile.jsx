@@ -1,22 +1,46 @@
 import { useState,useRef } from "react";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { editProfile } from "../../apiCalls/authCalls";
+import { setProfileData, setUserData } from "../redux/userSlice";
+import { useDispatch } from "react-redux";
 
 function EditProfile() {
 
     const [profileImage , setProfileImage]=useState('')
+    const [serverProfileImage , setServerProfileImage]=useState(null)
     const { profileData } = useSelector(state => state.user)
     const imageInput = useRef()
     const [userName, setUserName] = useState(profileData.userName)
     const [name, setName] = useState(profileData.name)
     const [bio, setBio] = useState(profileData.bio)
-
+    const dispatch = useDispatch()
     function handleImage(e){
         const file = e.target.files[0]
 
         const imageUrl = URL.createObjectURL(file)
         console.log(imageUrl)
         setProfileImage(imageUrl)
+        setServerProfileImage(file); 
+
+    }
+
+    async function handleEditProfile(){   
+        try{
+            const formData = new FormData()
+            formData.append('userName', userName)
+            formData.append('name', name)
+            formData.append('bio', bio)
+            if(serverProfileImage){ 
+                formData.append('profileImage', serverProfileImage)
+            }
+            const result = await editProfile(formData)
+            dispatch(setProfileData(result))
+            dispatch(setUserData(result))
+            console.log("Profile edited successfully:", result);
+        }catch(error){
+            console.error("Error editing profile:", error);
+        }
     }
 
   return (
@@ -111,7 +135,7 @@ function EditProfile() {
 
         {/* Save Button */}
         <button 
-         
+          onClick={handleEditProfile}
           className="w-full h-[50px] bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:opacity-90 transition"
         >
           Save Profile
