@@ -9,6 +9,7 @@ const uploadFile = async (file) => {
     });
 
     const result = await cloudinary.uploader.upload(file);
+
     return result.secure_url;
   } catch (error) {
     console.error(error);

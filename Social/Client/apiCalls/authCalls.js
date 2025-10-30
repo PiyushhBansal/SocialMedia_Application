@@ -73,3 +73,26 @@ export const editProfile = async (formData) => {
     throw error.response?.data?.message || "Something went wrong";
   }
 };
+
+
+export const createPost = async (formData)=>{
+    try {
+    const response = await api.post(`/api/post/uploadPost/`, formData , {withCredentials:true});
+    console.log(response);
+    return response.data; // return just the data
+  } catch (error) {
+    // standardize error handling
+    throw error.response?.data?.message || "Something went wrong";
+  }
+}
+
+export const getAllPosts = async ()=>{
+    try {
+    const response = await api.get(`/api/post/getAllPosts`,  {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data?.message || "Failed to fetch Posts";
+  } 
+}

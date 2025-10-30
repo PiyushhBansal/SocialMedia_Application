@@ -5,6 +5,8 @@ import { FiSearch, FiPlusSquare } from "react-icons/fi";
 import { RxVideo } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Upload from "../pages/Upload";
+
 
 function NavDesign() {
   const { userData } = useSelector((state)=>state.user)
@@ -24,7 +26,7 @@ function NavDesign() {
       {/* Icons */}
       <GoHomeFill className="text-neutral-700 cursor-pointer w-[24px] h-[24px] hover:text-black" />
       <FiSearch className="text-neutral-700 cursor-pointer w-[24px] h-[24px] hover:text-black" />
-      <FiPlusSquare className="text-neutral-700 cursor-pointer w-[24px] h-[24px] hover:text-black" />
+      <FiPlusSquare onClick={()=>navigate(`/Upload`)} className="text-neutral-700 cursor-pointer w-[24px] h-[24px] hover:text-black" />
       <RxVideo className="text-neutral-700 cursor-pointer w-[26px] h-[26px] hover:text-black" />
 
       {/* Avatar */}

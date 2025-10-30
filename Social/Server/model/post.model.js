@@ -27,7 +27,7 @@ const postSchema = new mongoose.Schema({
 
   mediaUrl: {
     type: String,
-    required: true,
+    
   },
 
   likes: [
