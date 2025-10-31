@@ -141,3 +141,12 @@ export const getFollowStatus = async (userId) => {
     throw error.response?.data?.message || "Failed to get follow status";
   }
 }
+export const getSuggestions = async () => {
+  try {
+    const res = await api.get("/api/user/suggestedUsers");
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching suggestions:", error);
+    throw error;
+  }
+};

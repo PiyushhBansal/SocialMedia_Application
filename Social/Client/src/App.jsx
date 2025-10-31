@@ -12,10 +12,13 @@ import Profile from "./pages/Profile.jsx";
 import EditProfile from "./pages/EditProfile.jsx";
 import Upload from "./pages/Upload.jsx";
 import useAllPosts from "../hooks/useAllPosts.jsx";
+import { get } from "mongoose";
+ import useSuggestedUsers from "../hooks/useSuggestedUsers";
 
 function App() {
-  useCurrentUser()
-  useAllPosts()
+  useCurrentUser();
+  useAllPosts();
+  useSuggestedUsers();
   const {userData,profileData} = useSelector(state=>state.user)
 
   return (
