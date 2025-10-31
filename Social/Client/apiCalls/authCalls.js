@@ -105,3 +105,11 @@ export const likePost = async (postId)=>{
     throw error.response?.data?.message || "Failed to Like Post";
   } 
 }
+export const commentPost = async (postId, commentText )=>{
+    try {
+    const response = await api.post(`/api/post/comment/${postId}`, { commentText } , { withCredentials: true});
+    return response.data;
+  } catch (error) {
+    throw error.response?.data?.message || "Failed to Comment on Post";
+  } 
+}

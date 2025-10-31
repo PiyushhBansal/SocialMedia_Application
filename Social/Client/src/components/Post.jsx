@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiComment } from "react-icons/bi";
 import { BsBookmark } from "react-icons/bs";
-import { likePost } from "../../apiCalls/authCalls";
+import { commentPost, likePost } from "../../apiCalls/authCalls";
 import { updatePost } from "../redux/postSlice"; 
 
 
@@ -35,6 +35,7 @@ function Post({ post }) {
       console.error("Like error:", error);
     } finally {
       setIsLiking(false);
+
     }
   };
 
@@ -51,6 +52,7 @@ function Post({ post }) {
       dispatch(updatePost(updatedPost));
       setCommentText("");
       setShowComments(true);
+
     } catch (error) {
       console.error("Comment error:", error);
     } finally {
@@ -171,6 +173,7 @@ function Post({ post }) {
         <button
           type="submit"
           disabled={!commentText.trim() || isCommenting}
+          
           className="px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
         >
           {isCommenting ? "..." : "Post"}

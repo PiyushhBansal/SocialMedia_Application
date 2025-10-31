@@ -63,7 +63,7 @@ export const like = async (req, res) => {
   // userId
   // already liked the post - dislike
   // if not - like
-  // userName
+  // userNamŵ
   const postId = req.params.postId;
 
   const post = await Post.findById(postId);
@@ -94,3 +94,32 @@ export const like = async (req, res) => {
   return res.status(200).json(post);
 };
 
+
+export const commentPost = async (req,res)=>{
+    const postId = req.params.postId;
+    const {commentText} = req.body  
+    if(!commentText || commentText.trim() ===""){
+        return res.status(400).json({message:"Comment text is required"})
+    }
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: "No post Found" });
+    }
+
+    const comment = {  
+        user: req.userId,
+        text: commentText,
+        createdAt: new Date()
+    }
+
+    post.comments.push(comment);
+    await post.save();
+    // await post.populate("comments.userId", "userName profilePicture");
+    const populatedPost = await Post.findById(postId)
+      .populate("author", "userName profileImage")
+      .populate("comments.user", "userName profileImage");
+    return res.status(200).json(populatedPost);
+    
+}
