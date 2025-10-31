@@ -7,6 +7,8 @@ import userrouter from './routes/user.routes.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import postrouter from './routes/post.routes.js'
+import followRouter from './routes/follower.routes.js'
+
 const app = express()
 const PORT = 8000 
 
@@ -23,6 +25,8 @@ app.use(express.urlencoded())
 app.use('/api/auth', authrouter)
 app.use('/api/user', userrouter)
 app.use('/api/post', postrouter)
+app.use('/api/follow', followRouter)
+
 //Database connection
 
 
