@@ -79,3 +79,17 @@ export const signIn = async(req , res)=>{
 
     res.status(200).json(user)    
  } 
+ 
+ export const signOut = async (req, res) => {
+  try {
+    res.cookie("token", "", {
+      httpOnly: true,
+      sameSite: "strict",
+      expires: new Date(0),
+    });
+    return res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};

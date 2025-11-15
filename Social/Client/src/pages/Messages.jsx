@@ -1,9 +1,22 @@
 // src/pages/MessagesDesign.jsx
 import React from "react";
+import SideNav from "../components/SideNav";
 
 function Messages() {
   return (
-    <div className="w-full h-full flex flex-col">
+    <div
+      className="
+        w-full min-h-screen
+        bg-black
+        flex justify-center lg:justify-start
+        px-2 sm:px-4 lg:px-10
+        py-6
+        text-white
+      "
+    >
+      <SideNav />
+
+      <div className="w-[95%] lg:max-w-[70%] min-h-[70vh] rounded-2xl flex flex-col overflow-hidden border border-neutral-800 bg-black lg:ml-[260px]">
       {/* Header */}
       <div className="w-full h-[70px] flex items-center px-6 border-b border-neutral-200">
         <h1 className="text-neutral-800 text-lg font-semibold">Messages</h1>
@@ -42,6 +55,7 @@ function Messages() {
               </div>
             </div>
           ))}
+      </div>
       </div>
     </div>
   );

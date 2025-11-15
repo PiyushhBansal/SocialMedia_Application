@@ -5,11 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { setProfileData } from "../redux/userSlice";
 import logo from "../assets/socialLogo.png";
 import Nav from "../components/Nav";
+import SideNav from "../components/SideNav";
+import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import {
   getProfile,
   getFollowStatus,
   followUser,
   unfollowUser,
+  getUserPosts,
 } from "../../apiCalls/authCalls";
 
 function Profile() {
@@ -21,14 +24,23 @@ function Profile() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followLoading, setFollowLoading] = useState(false);
   const [followersCount, setFollowersCount] = useState(0);
+  const [userPosts, setUserPosts] = useState([]);
 
-  const isOwnProfile = userData?.userName === userName;
+  // Determine if this profile belongs to the logged-in user
+  const isOwnProfile =
+    !!profileData &&
+    !!userData &&
+    profileData.userName === userData.userName;
 
   const handleProfile = async (userName) => {
     try {
       const result = await getProfile(userName);
       dispatch(setProfileData(result));
       setFollowersCount(result.followers?.length || 0);
+
+      // Fetch this user's posts
+      const posts = await getUserPosts(result._id);
+      setUserPosts(posts || []);
 
       // Check follow status if not own profile
       if (!isOwnProfile) {
@@ -78,26 +90,39 @@ function Profile() {
     <div
       className="
         w-full min-h-screen 
-        bg-[radial-gradient(1200px_800px_at_10%_-10%,#f58529_0%,transparent_35%),radial-gradient(1200px_800px_at_110%_0%,#dd2a7b_0%,transparent_40%),radial-gradient(900px_700px_at_50%_110%,#8134af_0%,transparent_45%),linear-gradient(180deg,#515bd4,#8134af)]
-        flex items-center justify-center
+        bg-black
+        flex justify-center lg:justify-start
+        px-2 sm:px-4 lg:px-10
+        py-6
+        text-white
       "
     >
-      <div className="w-[95%] lg:max-w-[85%] min-h-[90vh] rounded-2xl flex flex-col overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.25)] bg-white">
+      {/* Left sidebar navigation on desktop (fixed) */}
+      <SideNav />
+
+      {/* Main profile content */}
+      <div className="w-[95%] lg:max-w-[85%] min-h-[90vh] rounded-2xl flex flex-col overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.25)] bg-black text-white lg:ml-[260px]">
         {/* Header */}
-        <div className="w-full h-[80px] flex items-center justify-between px-6 border-b border-neutral-200">
-          <img src={logo} alt="Logo" className="w-[100px]" />
+        <div className="w-full h-[80px] flex items-center justify-between px-6 border-b border-neutral-800">
+          <div className="flex items-center gap-3">
+            <MdOutlineKeyboardBackspace
+              className="w-6 h-6 text-white cursor-pointer"
+              onClick={() => navigate("/home")}
+            />
+            {/* <img src={logo} alt="Logo" className="w-[100px]" /> */}
+          </div>
           <div className="flex items-center gap-5">
             <div className="relative">
-              <div className="w-[26px] h-[26px] bg-neutral-200 rounded-full"></div>
-              <div className="w-[10px] h-[10px] bg-blue-600 rounded-full absolute top-0 right-[-5px]"></div>
+              {/* <div className="w-[26px] h-[26px] bg-neutral-200 rounded-full"></div> */}
+              {/* <div className="w-[10px] h-[10px] bg-blue-600 rounded-full absolute top-0 right-[-5px]"></div> */}
             </div>
-            <div className="w-[26px] h-[26px] bg-neutral-200 rounded-full"></div>
+            {/* <div className="w-[26px] h-[26px] bg-neutral-200 rounded-full"></div> */}
           </div>
         </div>
 
         {/* Profile Section */}
-        <div className="flex-1 w-full px-6 py-8 overflow-y-auto bg-neutral-50">
-          <div className="w-full bg-white border border-neutral-200 rounded-xl p-6 shadow-sm">
+        <div className="flex-1 w-full px-6 py-8 overflow-y-auto bg-neutral-950">
+          <div className="w-full bg-black border border-neutral-800 rounded-xl p-6 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
               {/* Left: Avatar + Info */}
               <div className="flex items-center gap-6">
@@ -107,17 +132,17 @@ function Profile() {
                   className="w-28 h-28 rounded-full object-cover border-4 border-neutral-200 shadow-md"
                 />
                 <div>
-                  <h1 className="text-2xl font-bold text-neutral-900">
+                  <h1 className="text-2xl font-bold text-white">
                     {profileData.name || "No name"}
                   </h1>
-                  <p className="text-sm text-neutral-600">
+                  <p className="text-sm text-neutral-300">
                     @{profileData.userName || "No username"}
                   </p>
-                  <p className="mt-1 text-neutral-500 text-sm">
+                  <p className="mt-1 text-neutral-300 text-sm">
                     {profileData.bio || "No bio available"}
                   </p>
                   {profileData.profession && (
-                    <span className="mt-2 inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs">
+                    <span className="mt-2 inline-block bg-blue-500/10 text-blue-300 px-3 py-1 rounded-full text-xs">
                       {profileData.profession}
                     </span>
                   )}
@@ -164,20 +189,51 @@ function Profile() {
             <div className="grid grid-cols-3 gap-4 text-center border-t pt-4">
               <div>
                 <div className="font-bold text-lg">
-                  {profileData.posts?.length || 0}
+                  {userPosts.length}
                 </div>
-                <div className="text-neutral-500 text-sm">Posts</div>
+                <div className="text-neutral-300 text-sm">Posts</div>
               </div>
               <div>
                 <div className="font-bold text-lg">{followersCount}</div>
-                <div className="text-neutral-500 text-sm">Followers</div>
+                <div className="text-neutral-300 text-sm">Followers</div>
               </div>
               <div>
                 <div className="font-bold text-lg">
                   {profileData.following?.length || 0}
                 </div>
-                <div className="text-neutral-500 text-sm">Following</div>
+                <div className="text-neutral-300 text-sm">Following</div>
               </div>
+            </div>
+
+            {/* User posts grid */}
+            <div className="mt-8">
+              <h2 className="text-lg font-semibold mb-4">Posts</h2>
+              {userPosts.length === 0 ? (
+                <p className="text-neutral-400 text-sm">No posts yet.</p>
+              ) : (
+                <div className="grid grid-cols-3 gap-1 sm:gap-3 md:gap-4 mt-2">
+                  {userPosts.map((post) => (
+                    <div
+                      key={post._id}
+                      className="relative w-full aspect-square bg-neutral-900 rounded-md overflow-hidden"
+                    >
+                      {post.mediaType === "image" ? (
+                        <img
+                          src={post.mediaUrl}
+                          alt={post.caption || "Post"}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <video
+                          src={post.mediaUrl}
+                          className="w-full h-full object-cover"
+                          muted
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

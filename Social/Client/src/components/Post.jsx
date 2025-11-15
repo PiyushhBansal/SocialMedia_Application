@@ -61,26 +61,37 @@ function Post({ post }) {
   };
 
   return (
-    <div className="w-full bg-white border border-neutral-200 rounded-xl p-4 mb-6 shadow-sm">
+    <div className="w-full bg-black border border-neutral-800 rounded-xl p-4 mb-6 shadow-sm text-white">
       {/* Post header */}
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-[40px] h-[40px] rounded-full bg-neutral-300 overflow-hidden">
-          <img
-            src={post.author.profileImage}
-            alt="profile"
-            className="w-full h-full object-cover"
-          />
+        <div className="w-[40px] h-[40px] rounded-full bg-neutral-700 overflow-hidden">
+          {(() => {
+            const isOwnPost = post.author?.userName === userData?.userName;
+            const avatarSrc =
+              post.author?.profilePicture ||
+              post.author?.profileImage ||
+              (isOwnPost ? userData?.profilePicture : null);
+
+            return (
+              avatarSrc && (
+                <img
+                  src={avatarSrc}
+                  alt={post.author?.userName || "profile"}
+                  className="w-full h-full object-cover"
+                />
+              )
+            );
+          })()}
         </div>
-        <div>
-          <p className="font-semibold text-sm">{post.author.userName}</p>
-          <p className="text-xs text-neutral-500">
+          <p className="font-semibold text-sm text-white">{post.author.userName}</p>
+          <p className="text-xs text-neutral-400">
             {new Date(post.createdAt).toLocaleDateString()}
           </p>
         </div>
-      </div>
+      
 
       {/* Post image/video */}
-      <div className="w-full h-[500px] bg-neutral-200 rounded-lg mb-3 overflow-hidden">
+      <div className="w-full h-[500px] bg-neutral-900 rounded-lg mb-3 overflow-hidden">
         {post.mediaType === "image" ? (
           <img
             src={post.mediaUrl}
@@ -97,7 +108,7 @@ function Post({ post }) {
       </div>
 
       {/* Post actions */}
-      <div className="flex gap-4 mb-3 text-[22px] text-neutral-700">
+      <div className="flex gap-4 mb-3 text-[22px] text-neutral-300">
         <button
           onClick={handleLike}
           disabled={isLiking}
@@ -122,14 +133,14 @@ function Post({ post }) {
 
       {/* Likes count */}
       {likesCount > 0 && (
-        <p className="text-sm font-semibold mb-2">
+        <p className="text-sm font-semibold mb-2 text-white">
           {likesCount} {likesCount === 1 ? 'like' : 'likes'}
         </p>
       )}
 
       {/* Caption */}
       {post.caption && (
-        <p className="text-sm text-neutral-700 mb-2">
+        <p className="text-sm text-neutral-200 mb-2">
           <span className="font-semibold">{post.author.userName}</span> {post.caption}
         </p>
       )}
@@ -138,7 +149,7 @@ function Post({ post }) {
       {commentsCount > 0 && !showComments && (
         <button
           onClick={() => setShowComments(true)}
-          className="text-sm text-neutral-500 hover:text-neutral-700"
+          className="text-sm text-neutral-400 hover:text-neutral-200"
         >
           View all {commentsCount} comments
         </button>
@@ -149,11 +160,11 @@ function Post({ post }) {
         <div className="mt-3 max-h-[200px] overflow-y-auto border-t pt-3">
           {post.comments.map((comment, idx) => (
             <div key={idx} className="mb-3">
-              <p className="text-sm">
+              <p className="text-sm text-neutral-200">
                 <span className="font-semibold">{comment.user?.userName || "User"}</span>{" "}
                 {comment.text}
               </p>
-              <p className="text-xs text-neutral-400 mt-1">
+              <p className="text-xs text-neutral-500 mt-1">
                 {new Date(comment.createdAt).toLocaleDateString()}
               </p>
             </div>
@@ -168,7 +179,7 @@ function Post({ post }) {
           placeholder="Add a comment..."
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
-          className="flex-1 px-3 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:border-neutral-400"
+          className="flex-1 px-3 py-2 text-sm border border-neutral-700 rounded-lg bg-neutral-900/70 text-white focus:outline-none focus:border-neutral-500"
         />
         <button
           type="submit"

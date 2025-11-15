@@ -64,8 +64,20 @@ export const editProfile = async (req,res)=>{
 
 export const getSuggestedUsers = async(req,res)=>{
   try{
-    const users = await User.find({_id:{$ne:req.userId}}).select("-password")
-    return res.status(200).json(users)
+    // Get current user to know who they already follow
+    const currentUser = await User.findById(req.userId);
+
+    // Find users that are not the current user and not already followed
+    const users = await User.find({
+      _id: {
+        $ne: req.userId,
+        $nin: currentUser?.following || [],
+      },
+    })
+      .select("-password")
+      .sort({ _id: -1 }); // newest users first
+
+    return res.status(200).json(users);
   }catch(error){
     console.error(error);
     return res.status(500).json({ message: "Server error" });

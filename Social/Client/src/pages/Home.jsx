@@ -2,29 +2,35 @@
 import React from "react";
 import LeftHome from "../components/LeftHome";
 import Feed from "../components/Feed";
-import RightHome from "../components/RightHome";
+import Nav from "../components/Nav";
+import SideNav from "../components/SideNav";
 
 function Home() {
   return (
     <div
       className="
        w-full min-h-screen
-        bg-[radial-gradient(1200px_800px_at_10%_-10%,#f58529_0%,transparent_35%),radial-gradient(1200px_800px_at_110%_0%,#dd2a7b_0%,transparent_40%),radial-gradient(900px_700px_at_50%_110%,#8134af_0%,transparent_45%),linear-gradient(180deg,#515bd4,#8134af)]
-        flex justify-center
-        px-2 sm:px-4 lg:px-6
+        bg-black
+        flex justify-center lg:justify-start
+        px-2 sm:px-4 lg:px-10
         py-6
-        gap-1
-        
+        text-white
       "
     >
-      {/* LEFT HOME (hidden on mobile) */}
-      <LeftHome/>
+      {/* Bottom navigation on mobile */}
+      <Nav />
 
-      {/* FEED */}
-      <Feed/>
+      {/* Left sidebar navigation on desktop (fixed) */}
+      <SideNav />
 
+      {/* Main content area (feed + suggestions) */}
+      <div className="flex gap-4 w-full lg:max-w-[1200px] lg:ml-[260px] items-start">
+        {/* Center feed */}
+        <Feed />
 
-      <RightHome/>
+        {/* Right suggestions / profile summary */}
+        <LeftHome />
+      </div>
     </div>
   );
 }

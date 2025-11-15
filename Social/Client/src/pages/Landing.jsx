@@ -5,7 +5,7 @@ import logo2 from "../assets/logo2.png";
 
 function LandingPage() {
   return (
-    <div className="w-full min-h-screen bg-[radial-gradient(1200px_800px_at_10%_-10%,#f58529_0%,transparent_35%),radial-gradient(1200px_800px_at_110%_0%,#dd2a7b_0%,transparent_40%),radial-gradient(900px_700px_at_50%_110%,#8134af_0%,transparent_45%),linear-gradient(180deg,#515bd4,#8134af)] flex flex-col">
+    <div className="w-full min-h-screen bg-black text-white flex flex-col">
       {/* Navbar */}
       <div className="w-full flex justify-between items-center px-6 py-4 text-white font-semibold text-lg">
         <div className="flex items-center gap-2">
@@ -36,9 +36,9 @@ function LandingPage() {
             Connect. Share. Scale 🚀
           </h1>
           <p className="text-lg md:text-xl opacity-90">
-            Welcome to <span className="font-bold">Scaler Gram</span> – the
-            coolest place to share your journey, connect with people, and scale
-            your network to the next level.
+            Welcome to <span className="font-bold">Scaler Gram</span> – the coolest
+            place to share your journey, connect with people, and scale your
+            network to the next level.
           </p>
           <div className="flex gap-4 mt-4">
             <Link

@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import postrouter from './routes/post.routes.js'
 import followRouter from './routes/follower.routes.js'
+import storyRouter from './routes/story.routes.js'
 
 const app = express()
 const PORT = 8000 
@@ -26,6 +27,7 @@ app.use('/api/auth', authrouter)
 app.use('/api/user', userrouter)
 app.use('/api/post', postrouter)
 app.use('/api/follow', followRouter)
+app.use('/api/story', storyRouter)
 
 //Database connection
 

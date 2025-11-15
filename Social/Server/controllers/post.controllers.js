@@ -11,7 +11,7 @@ export const uploadPost = async (req,res)=>{
         mediaUrl= await uploadFile(req.file.path)
     }
     else{
-        return res.status(400).json({message:"Media file is required"})
+      return res.status(400).json({message:"Media file is required"})
     }
 
 
@@ -49,12 +49,26 @@ export const getAllPosts = async (req, res) => {
     const posts = await Post.find({
       author: { $in: userIds }
     })
-      .populate("author", "name userName profileImage")
+.populate("author", "name userName profilePicture")
       .sort({ createdAt: -1 }); // Latest posts first
     
     return res.status(200).json(posts);
   } catch (error) {
     return res.status(500).json({ message: `Cannot get posts error ${error}` });
+  }
+};
+
+export const getPostsByUser = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const posts = await Post.find({ author: userId })
+      .populate("author", "name userName profilePicture")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json(posts);
+  } catch (error) {
+    return res.status(500).json({ message: `Cannot get user posts error ${error}` });
   }
 };
 
@@ -118,8 +132,8 @@ export const commentPost = async (req,res)=>{
     await post.save();
     // await post.populate("comments.userId", "userName profilePicture");
     const populatedPost = await Post.findById(postId)
-      .populate("author", "userName profileImage")
-      .populate("comments.user", "userName profileImage");
+      .populate("author", "userName profilePicture")
+      .populate("comments.user", "userName profilePicture");
     return res.status(200).json(populatedPost);
     
 }

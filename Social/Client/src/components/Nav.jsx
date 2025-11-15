@@ -9,12 +9,13 @@ import Upload from "../pages/Upload";
 
 
 function NavDesign() {
-  const { userData } = useSelector((state)=>state.user)
-  const navigate = useNavigate()
+  const { userData } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   return (
     <div
       className="
-        w-[90%] lg:w-[40%] h-[70px] 
+        lg:hidden
+        w-[90%] h-[70px]
         bg-white rounded-full
         fixed bottom-5 left-1/2 -translate-x-1/2
         flex justify-around items-center
@@ -24,14 +25,27 @@ function NavDesign() {
       "
     >
       {/* Icons */}
-      <GoHomeFill className="text-neutral-700 cursor-pointer w-[24px] h-[24px] hover:text-black" />
+      <GoHomeFill
+        className="text-neutral-700 cursor-pointer w-[24px] h-[24px] hover:text-black"
+        onClick={() => navigate("/home")}
+      />
       <FiSearch className="text-neutral-700 cursor-pointer w-[24px] h-[24px] hover:text-black" />
-      <FiPlusSquare onClick={()=>navigate(`/Upload`)} className="text-neutral-700 cursor-pointer w-[24px] h-[24px] hover:text-black" />
+      <FiPlusSquare
+        onClick={() => navigate("/upload")}
+        className="text-neutral-700 cursor-pointer w-[24px] h-[24px] hover:text-black"
+      />
       <RxVideo className="text-neutral-700 cursor-pointer w-[26px] h-[26px] hover:text-black" />
 
       {/* Avatar */}
-      <div onClick={()=>navigate(`/profile/${userData?.userName}`)} className="w-[40px] h-[40px] rounded-full overflow-hidden border border-neutral-300 cursor-pointer">
-        <img  src={userData?.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+      <div
+        onClick={() => navigate(`/profile/${userData?.userName}`)}
+        className="w-[40px] h-[40px] rounded-full overflow-hidden border border-neutral-300 cursor-pointer"
+      >
+        <img
+          src={userData?.profilePicture}
+          alt="Profile"
+          className="w-full h-full object-cover"
+        />
       </div>
     </div>
   );
