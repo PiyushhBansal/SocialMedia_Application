@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 8000
 // Middleware
 const allowedOrigins = [
   'http://localhost:5173',
-  process.env.CLIENT_ORIGIN, // e.g. https://your-frontend.onrender.com
+  process.env.CLIENT_URL, // e.g. https://your-frontend.onrender.com
 ].filter(Boolean);
 
 app.use(
