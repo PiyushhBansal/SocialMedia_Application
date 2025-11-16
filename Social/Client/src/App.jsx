@@ -2,7 +2,7 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import SignIn from "./pages/SignIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
-import Landing from "./Pages/Landing.jsx";
+import Landing from "./pages/Landing.jsx";
 import Home from "./pages/Home.jsx";
 import useCurrentUser from "../hooks/useCurrentUser.jsx";
 import { useSelector } from "react-redux";
