@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs"
 import genToken from "../config/token.js"
 
 
+const isProd = process.env.NODE_ENV === "production";
+
 export const signUp = async(req , res)=>{
     const {name , email,password , userName} = req.body
 
@@ -36,9 +38,9 @@ export const signUp = async(req , res)=>{
 
     res.cookie("token", token, {
         httpOnly: true,
-        sameSite:'strict',
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
         maxAge: 30*24*60*60*1000 // 30 days
-        
     });
 
 
@@ -71,9 +73,9 @@ export const signIn = async(req , res)=>{
     const token = await genToken(user._id)
       res.cookie("token", token, {
         httpOnly: true,
-        sameSite:'strict',
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
         maxAge: 30*24*60*60*1000 // 30 days
-        
     });
     console.log(token)
 
@@ -84,7 +86,8 @@ export const signIn = async(req , res)=>{
   try {
     res.cookie("token", "", {
       httpOnly: true,
-      sameSite: "strict",
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
       expires: new Date(0),
     });
     return res.status(200).json({ message: "Logged out successfully" });
